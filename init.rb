@@ -1,5 +1,5 @@
 require 'redmine'
-require_dependency 'hooks' 
+require_dependency 'vote_on_issues/hooks'
 require_dependency 'query_column'
 
 # patch issue_query to allow columns for votes
@@ -37,11 +37,4 @@ Redmine::Plugin.register :vote_on_issues do
   #     User.current.allowed_to?(:view_votes, nil, :global => true)
   #   }
   
-end
-
-class VoteOnIssuesListener < Redmine::Hook::ViewListener
-  render_on :view_layouts_base_html_head, :inline =>  <<-END
-      <%= stylesheet_link_tag 'view_issues_vote', :plugin => 'vote_on_issues' %>
-      <%= javascript_include_tag 'view_issues_vote', :plugin => 'vote_on_issues' %>
-    END
 end
