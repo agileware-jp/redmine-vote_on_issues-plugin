@@ -1,0 +1,2 @@
+module VoteOnIssues
+end
