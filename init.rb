@@ -1,3 +1,5 @@
+require File.expand_path('../lib/vote_on_issues/hooks', __FILE__)
+
 Redmine::Plugin.register :vote_on_issues do
   name 'Vote On Issues'
   description 'This plugin allows to up- and down-vote issues.'
@@ -29,8 +31,6 @@ Redmine::Plugin.register :vote_on_issues do
 end
 
 Rails.configuration.to_prepare do
-  require 'vote_on_issues/hooks'
-
   # patch issue_query to allow columns for votes
   issue_query = (IssueQuery rescue Query)
   issue_query.add_available_column(VoteOnIssues::QueryColumn.new(:sum_votes_up, sortable: '(SELECT abs(sum(vote_val)) FROM vote_on_issues WHERE vote_val > 0 AND issue_id=issues.id )'))
