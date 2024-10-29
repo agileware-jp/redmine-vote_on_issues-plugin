@@ -1,14 +1,3 @@
-require 'redmine'
-require_dependency 'vote_on_issues/hooks'
-require_dependency 'query_column'
-
-# patch issue_query to allow columns for votes
-issue_query = (IssueQuery rescue Query)
-issue_query.add_available_column(VOI_QueryColumn.new(:sum_votes_up, :sortable => '(SELECT abs(sum(vote_val)) FROM vote_on_issues WHERE vote_val > 0 AND issue_id=issues.id )'))
-issue_query.add_available_column(VOI_QueryColumn.new(:sum_votes_dn, :sortable => '(SELECT abs(sum(vote_val)) FROM vote_on_issues WHERE vote_val < 0 AND issue_id=issues.id )'))
-Issue.send(:include, VoteOnIssues::Patches::QueryPatch)
-
-
 Redmine::Plugin.register :vote_on_issues do
   name 'Vote On Issues'
   description 'This plugin allows to up- and down-vote issues.'
@@ -37,4 +26,14 @@ Redmine::Plugin.register :vote_on_issues do
   #     User.current.allowed_to?(:view_votes, nil, :global => true)
   #   }
   
+end
+
+Rails.configuration.to_prepare do
+  require 'vote_on_issues/hooks'
+
+  # patch issue_query to allow columns for votes
+  issue_query = (IssueQuery rescue Query)
+  issue_query.add_available_column(VoteOnIssues::QueryColumn.new(:sum_votes_up, sortable: '(SELECT abs(sum(vote_val)) FROM vote_on_issues WHERE vote_val > 0 AND issue_id=issues.id )'))
+  issue_query.add_available_column(VoteOnIssues::QueryColumn.new(:sum_votes_dn, sortable: '(SELECT abs(sum(vote_val)) FROM vote_on_issues WHERE vote_val < 0 AND issue_id=issues.id )'))
+  Issue.include(VoteOnIssues::Patches::QueryPatch)
 end
