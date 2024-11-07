@@ -1,3 +1,9 @@
+= This repository is not maintained.
+
+Our Redmine environments migrate from +vote_on_issues+ (this repository's) to +redmine_hearts+[https://github.com/cat-in-136/redmine_hearts] with https://github.com/cat-in-136/redmine_hearts/pull/52 . Thank you.
+
+---
+
 = Vote On Issues
 
 A plugin for Redmine[www.redmine.org] which allows users to up- or down-vote issues.
